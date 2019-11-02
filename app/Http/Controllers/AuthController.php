@@ -4,11 +4,21 @@ namespace App\Http\Controllers;
 
 use Socialite;
 use App\Models\User;
+use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+
+    public function __construct() {
+        $this->http = new Client(['verify' => false]);
+    }
+
     /**
      * Redirect the user to the GitHub authentication page.
      *
@@ -16,6 +26,9 @@ class AuthController extends Controller
      */
     public function redirectToProvider()
     {
+        // Find a better way to manage this when there are mulitple providers
+        // 1. Create seperate controllers
+        // 2. Take in a provider parameter and call different methods based on that
         return Socialite::driver('github')->stateless()->redirect();
     }
 
@@ -24,33 +37,43 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function handleProviderCallback()
+    public function handleProviderCallback(Request $request)
     {
-        $user = $this->findOrCreateGithubUser(
-            Socialite::driver('github')->stateless()->user()
-        );
+        $user = Socialite::driver('github')->stateless()->user();
 
-        Auth::login($user, true);
 
-        return Redirect::to(config('client.auth.redirect_url') . "?token=${Auth::user()->createToken('Client')->accessToken}");
-    }
-
-    private function findOrCreateGithubUser($githubUser) {
-        $user = User::firstOrNew([
-            'github_id' => $githubUser->id,
+        $response = $this->http->post(route('passport.token'), [
+            RequestOptions::FORM_PARAMS => [
+                'grant_type' => 'social',
+                'client_id' => config('services.password_client.client_id'),
+                'client_secret' => config('services.password_client.client_secret'),
+                'provider' => 'github',
+                'access_token' => $user->token,
+            ],
+            RequestOptions::HTTP_ERRORS => false,
         ]);
 
+        $query = $this->getQueryFromResponse($response);
 
-        if ($user->exists) return $user;
-
-        $user->fill([
-            'email' => $githubUser->email,
-            'name' => $githubUser->nickname,
-            'avatar' => $githubUser->avatar,
-        ])->save();
-
-        return $user;
+        return Redirect::to(config('client.auth.redirect_url') . '?' . $query);
     }
+
+    private function getQueryFromResponse($response) {
+        $authorised = $response->getStatusCode() === Response::HTTP_OK;
+        $data = json_decode($response->getBody()->getContents(), true);
+        $params = [];
+
+        if ($authorised) {
+            $params['status'] = 'success';
+            $params['token'] = Arr::get($data, 'access_token');
+        } else {
+            $params['status'] = 'error';
+            $params['message'] = 'Authorisation failed.';
+        }
+
+        return http_build_query($params);
+    }
+
 }
 
 
