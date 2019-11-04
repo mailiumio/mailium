@@ -2,10 +2,17 @@
 
 namespace App\Providers;
 
+use Laravel\Passport\Passport;
+use App\Services\SocialUserResolver;
 use Illuminate\Support\ServiceProvider;
+use Coderello\SocialGrant\Resolvers\SocialUserResolverInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public $bindings = [
+        SocialUserResolverInterface::class => SocialUserResolver::class,
+    ];
+
     /**
      * Register any application services.
      *
@@ -23,6 +30,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Passport::routes();
     }
 }
