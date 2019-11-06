@@ -15,7 +15,12 @@ use Illuminate\Http\Request;
 
 Route::prefix('v1')->group(function() {
     Route::middleware(['auth:api'])->group(function() {
+        // User Routes
         Route::get('/user', 'UserController@show')->name('user.show'); 
         Route::post('/logout', 'UserController@logout')->name('user.logout');
+
+        // Team Routes
+        Route::get('/team/{team}', 'TeamController@show')->name('teams.show');
     });
+
 });
