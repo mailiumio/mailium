@@ -20,7 +20,8 @@ Route::prefix('v1')->group(function() {
         Route::post('/logout', 'UserController@logout')->name('user.logout');
 
         // Team Routes
-        Route::get('/team/{team}', 'TeamController@show')->name('teams.show');
+        Route::get('/teams}', 'TeamController@index')->name('teams.index');
+        Route::get('/teams/{team}', 'TeamController@show')->name('teams.show');
     });
 
 });

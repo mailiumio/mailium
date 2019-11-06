@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use App\Http\Resources\TeamResource;
+use Illuminate\Support\Facades\Auth;
 
 class TeamController extends Controller
 {
@@ -15,6 +16,15 @@ class TeamController extends Controller
 
         return response()->json(
             TeamResource::make($team)
+        );
+    }
+
+    public function index()
+    {
+        return TeamResource::collection(
+            Auth::user()->teams->merge(
+                Auth::user()->linkedTeams
+            )
         );
     }
 

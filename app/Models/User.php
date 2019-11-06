@@ -43,6 +43,11 @@ class User extends Authenticatable
         return $this->hasMany(LinkedSocialAccount::class);
     }
 
+    public function teams()
+    {
+        return $this->hasMany(Team::class);
+    }
+
     public function linkedTeams()
     {
         return $this->belongsToMany(Team::class, 'invitations')
