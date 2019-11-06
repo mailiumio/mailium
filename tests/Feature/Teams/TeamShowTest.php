@@ -62,4 +62,23 @@ class TeamShowTest extends TestCase
             ]);
     }
 
+    /** @test */
+    public function an_authenticated_user_can_see_another_users_team_that_they_belong_to()
+    {
+        $user = Passport::actingAs(
+            factory(User::class)->create()
+        );
+        $team = factory(Team::class)->create();
+
+        $user->linkedTeams()->attach($team);
+
+        $this->json('GET', route('teams.show', $team->id))
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                'id' => $team->id,
+                'name' => $team->name,
+                'user_id' => $team->owner->id,
+            ]);
+    }
+
 }

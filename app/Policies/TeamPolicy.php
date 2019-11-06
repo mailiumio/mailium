@@ -12,7 +12,13 @@ class TeamPolicy
 
     public function view(User $user, Team $team)
     {
-        return $team->user_id === $user->id;
+        if ($team->user_id === $user->id) {
+            return true;
+        }
+
+        return $user->linkedTeams()
+            ->pluck('id')
+            ->contains($team->id);
     }
 
 }
