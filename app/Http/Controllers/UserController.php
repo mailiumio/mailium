@@ -12,9 +12,9 @@ class UserController extends Controller
     
     public function show()
     {
-        return Response::json([
-            'user' => UserResource::make(Auth::user()),
-        ]);
+        return Response::json(
+            UserResource::make(Auth::user())
+        );
     }
 
     public function logout()

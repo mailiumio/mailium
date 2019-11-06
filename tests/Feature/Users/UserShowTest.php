@@ -31,14 +31,14 @@ class UserShowTest extends TestCase
         $this->json('GET', route('user.show'))
             ->assertStatus(200)
             ->assertJsonStructure([
-                'user'
+                'name',
+                'email',
+                'avatar'
             ])
             ->assertJsonFragment([
-                'user' => [
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'avatar' => $user->avatar,
-                ]
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatar' => $user->avatar,
             ]);
     }
 
