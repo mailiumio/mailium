@@ -14,9 +14,7 @@ class TeamController extends Controller
     {
         $this->authorize('view', $team);
 
-        return response()->json(
-            TeamResource::make($team)
-        );
+        return TeamResource::make($team);
     }
 
     public function index()

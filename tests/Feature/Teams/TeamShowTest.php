@@ -51,9 +51,11 @@ class TeamShowTest extends TestCase
         $this->json('GET', route('teams.show', $team->id))
             ->assertStatus(200)
             ->assertJsonStructure([
-                'id',
-                'name',
-                'user_id'
+                'data' => [
+                    'id',
+                    'name',
+                    'user_id',
+                ]
             ])
             ->assertJsonFragment([
                 'id' => $team->id,
