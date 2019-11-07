@@ -14,11 +14,11 @@ class CreateInvitationsTable extends Migration
     public function up()
     {
         Schema::create('invitations', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('owner_id');
             $table->unsignedBigInteger('team_id');
             $table->timestamps();
 
-            $table->primary(['user_id', 'team_id']);
+            $table->primary(['owner_id', 'team_id']);
         });
     }
 

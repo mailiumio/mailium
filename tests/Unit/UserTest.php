@@ -17,7 +17,7 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
         $team = factory(Team::class)->create([
-            'user_id' => $user->id,
+            'owner_id' => $user->id,
         ]);
 
         $this->assertTrue($user->isAssociatedWith($team));
@@ -48,7 +48,7 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
         $ownedTeam = factory(Team::class)->create([
-            'user_id' => $user->id,
+            'owner_id' => $user->id,
         ]);
         $linkedTeam = factory(Team::class)->create();
         $user->linkedTeams()->attach($linkedTeam);

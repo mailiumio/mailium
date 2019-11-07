@@ -29,7 +29,7 @@ class TeamIndexTest extends TestCase
             factory(User::class)->create()
         );
         $team = factory(Team::class)->create([
-            'user_id' => $user->id,
+            'owner_id' => $user->id,
         ]);
 
         $this->json('GET', route('teams.index'))
@@ -38,7 +38,7 @@ class TeamIndexTest extends TestCase
             ->assertJsonFragment([
                 'id' => $team->id,
                 'name' => $team->name,
-                'user_id' => $team->user_id,
+                'owner_id' => $team->owner_id,
             ]);
     }
     /** @test */
@@ -57,20 +57,20 @@ class TeamIndexTest extends TestCase
             ->assertJsonFragment([
                 'id' => $team->id,
                 'name' => $team->name,
-                'user_id' => $team->user_id,
+                'owner_id' => $team->owner_id,
             ]);
     }
 
     /** @test */
     public function an_authenticted_user_cannot_list_other_users_teams()
     {
-        $this->withExceptionHandling();
+        // $this->withExceptionHandling();
 
         $user = Passport::actingAs(
             factory(User::class)->create()
         );
         $ownedTeam = factory(Team::class)->create([
-            'user_id' => $user->id,
+            'owner_id' => $user->id,
         ]);
         $otherTeam = factory(Team::class)->create();
 

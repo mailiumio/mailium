@@ -45,7 +45,7 @@ class TeamShowTest extends TestCase
             factory(User::class)->create()
         );
         $team = factory(Team::class)->create([
-            'user_id' => $user->id,
+            'owner_id' => $user->id,
         ]);
 
         $this->json('GET', route('teams.show', $team->id))
@@ -54,13 +54,13 @@ class TeamShowTest extends TestCase
                 'data' => [
                     'id',
                     'name',
-                    'user_id',
+                    'owner_id',
                 ]
             ])
             ->assertJsonFragment([
                 'id' => $team->id,
                 'name' => $team->name,
-                'user_id' => $user->id,
+                'owner_id' => $user->id,
             ]);
     }
 
@@ -79,7 +79,7 @@ class TeamShowTest extends TestCase
             ->assertJsonFragment([
                 'id' => $team->id,
                 'name' => $team->name,
-                'user_id' => $team->owner->id,
+                'owner_id' => $team->owner_id,
             ]);
     }
 

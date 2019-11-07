@@ -46,7 +46,7 @@ class ListShowTest extends TestCase
             factory(User::class)->create()
         );
         $team = factory(Team::class)->create([
-            'user_id' => $user->id,
+            'owner_id' => $user->id,
         ]);
         $list = factory(SubscriberList::class)->create([
             'team_id' => $team->id,
@@ -75,7 +75,7 @@ class ListShowTest extends TestCase
         $team = factory(Team::class)->create();
 
         $user->linkedTeams()->attach($team);
-        
+
         $list = factory(SubscriberList::class)->create([
             'team_id' => $team->id,
         ]);
