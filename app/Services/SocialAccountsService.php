@@ -34,7 +34,7 @@ class SocialAccountsService
                 ]);
 
                 $team = $user->ownedTeams()->create([
-                    'name' => "${$user->name}'s Team",
+                    'name' => "{$providerUser->nickname}'s Team",
                 ]);
             }
 
