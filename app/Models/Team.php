@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\SubscriberList;
 use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
@@ -13,6 +14,11 @@ class Team extends Model
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function lists()
+    {
+        return $this->hasMany(SubscriberList::class);
     }
 
 }

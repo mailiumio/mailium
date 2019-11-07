@@ -73,4 +73,11 @@ class User extends Authenticatable
             ->contains($team->id);
     }
 
+    public function lists()
+    {
+        return $this->teams()->flatMap(function ($team) {
+            return $team->lists;
+        });
+    }
+
 }

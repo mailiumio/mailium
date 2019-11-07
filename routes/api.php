@@ -24,6 +24,7 @@ Route::prefix('v1')->group(function() {
         Route::get('/teams/{team}', 'TeamController@show')->name('teams.show');
 
         // List Routes
+        Route::get('/lists', 'ListController@index')->name('lists.index');
         Route::get('/lists/{list}', 'ListController@show')->name('lists.show');
     });
 
