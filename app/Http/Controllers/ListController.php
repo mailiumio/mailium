@@ -22,4 +22,13 @@ class ListController extends Controller
         return ListResource::make($list);
     }
 
+    public function destroy(SubscriberList $list)
+    {
+        $this->authorize('delete', $list);
+
+        $list->delete();
+
+        return 200;
+    }
+
 }

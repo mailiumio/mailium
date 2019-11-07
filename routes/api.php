@@ -27,6 +27,7 @@ Route::prefix('v1')->group(function() {
         Route::get('/lists', 'ListController@index')->name('lists.index');
         Route::get('teams/{team}/lists', 'TeamListController@index')->name('teams.lists.index');
         Route::get('/lists/{list}', 'ListController@show')->name('lists.show');
+        Route::delete('/lists/{list}', 'ListController@destroy')->name('lists.destroy');
     });
 
 

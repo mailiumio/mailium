@@ -14,4 +14,9 @@ class ListPolicy
     {
         return $user->isAssociatedWith($list->team);
     }
+
+    public function delete(User $user, SubscriberList $list)
+    {
+        return $user->isAssociatedWith($list->team);
+    }
 }
