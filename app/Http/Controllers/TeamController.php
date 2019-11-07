@@ -20,9 +20,7 @@ class TeamController extends Controller
     public function index()
     {
         return TeamResource::collection(
-            Auth::user()->teams->merge(
-                Auth::user()->linkedTeams
-            )
+            Auth::user()->teams()
         );
     }
 

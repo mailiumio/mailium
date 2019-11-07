@@ -43,4 +43,17 @@ class UserTest extends TestCase
         $this->assertFalse($user->isAssociatedWith($team));
     }
 
+    /** @test */
+    public function can_get_owned_teams_and_associated_teams()
+    {
+        $user = factory(User::class)->create();
+        $ownedTeam = factory(Team::class)->create([
+            'user_id' => $user->id,
+        ]);
+        $linkedTeam = factory(Team::class)->create();
+        $user->linkedTeams()->attach($linkedTeam);
+
+        $this->assertCount(2, $user->teams());
+    }
+
 }

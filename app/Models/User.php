@@ -43,7 +43,7 @@ class User extends Authenticatable
         return $this->hasMany(LinkedSocialAccount::class);
     }
 
-    public function teams()
+    public function ownedTeams()
     {
         return $this->hasMany(Team::class);
     }
@@ -53,6 +53,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Team::class, 'invitations')
             ->as('invitation')
             ->withTimestamps();
+    }
+
+    public function teams()
+    {
+        return $this->ownedTeams->merge(
+            $this->linkedTeams
+        );
     }
 
     public function isAssociatedWith(Team $team)

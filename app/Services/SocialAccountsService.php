@@ -33,8 +33,8 @@ class SocialAccountsService
                     'avatar' => $providerUser->avatar,
                 ]);
 
-                $team = $user->teams()->create([
-                    'name' => 'Personal',
+                $team = $user->ownedTeams()->create([
+                    'name' => "${$user->name}'s Team",
                 ]);
             }
 
