@@ -12,7 +12,7 @@ class ListController extends Controller
     
     public function index()
     {
-        return ListResource::collection(Auth::user()->lists());   
+        return ListResource::collection(Auth::user()->lists());
     }
 
     public function show(SubscriberList $list)
