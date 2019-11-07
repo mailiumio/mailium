@@ -55,4 +55,15 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function isAssociatedWith(Team $team)
+    {
+        if ($this->id === $team->owner->id) {
+            return true;
+        }
+
+        return $this->linkedTeams()
+            ->pluck('id')
+            ->contains($team->id);
+    }
+
 }
