@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\SubscriberList;
 use App\Http\Resources\ListResource;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreListRequest;
+use App\Http\Requests\ListStoreRequest;
+use App\Http\Requests\ListUpdateRequest;
 
 class ListController extends Controller
 {
@@ -23,9 +24,18 @@ class ListController extends Controller
         return ListResource::make($list);
     }
 
-    public function store(StoreListRequest $request)
+    public function store(ListStoreRequest $request)
     {
         $list = SubscriberList::create($request->validated());
+
+        return ListResource::make($list);
+    }
+
+    public function update(ListUpdateRequest $request, SubscriberList $list)
+    {
+        $this->authorize('update', $list);
+
+        $list->update($request->validated());
 
         return ListResource::make($list);
     }

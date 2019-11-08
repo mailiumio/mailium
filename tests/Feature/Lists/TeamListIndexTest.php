@@ -55,7 +55,11 @@ class TeamListIndexTest extends TestCase
         ]);
 
         $response = $this->json('GET', route('teams.lists.index', $team->id))
-            ->assertJsonStructure(['data'])
+            ->assertJsonStructure([
+                'data',
+                'links',
+                'meta',
+            ])
             ->assertJsonFragment([
                 'id' => $list->id,
                 'name' => $list->name,

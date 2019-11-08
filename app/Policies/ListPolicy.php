@@ -19,4 +19,10 @@ class ListPolicy
     {
         return $user->isAssociatedWith($list->team);
     }
+
+    public function update(User $user, SubscriberList $list)
+    {
+        return $user->isAssociatedWith($list->team);
+    }
+
 }
