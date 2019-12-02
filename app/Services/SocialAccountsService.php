@@ -32,6 +32,10 @@ class SocialAccountsService
                     'email' => $providerUser->getEmail(),
                     'avatar' => $providerUser->avatar,
                 ]);
+
+                $team = $user->ownedTeams()->create([
+                    'name' => "{$providerUser->nickname}'s Team",
+                ]);
             }
 
             $user->linkedSocialAccounts()->create([

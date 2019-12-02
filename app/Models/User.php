@@ -43,4 +43,41 @@ class User extends Authenticatable
         return $this->hasMany(LinkedSocialAccount::class);
     }
 
+    public function ownedTeams()
+    {
+        return $this->hasMany(Team::class, 'owner_id');
+    }
+
+    public function linkedTeams()
+    {
+        return $this->belongsToMany(Team::class, 'invitations', 'owner_id')
+            ->as('invitation')
+            ->withTimestamps();
+    }
+
+    public function teams()
+    {
+        return $this->ownedTeams->merge(
+            $this->linkedTeams
+        );
+    }
+
+    public function isAssociatedWith(Team $team)
+    {
+        if ($this->id === $team->owner->id) {
+            return true;
+        }
+
+        return $this->linkedTeams()
+            ->pluck('id')
+            ->contains($team->id);
+    }
+
+    public function lists()
+    {
+        return $this->teams()->flatMap(function ($team) {
+            return $team->lists;
+        });
+    }
+
 }
