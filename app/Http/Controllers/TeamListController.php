@@ -13,7 +13,7 @@ class TeamListController extends Controller
     {
         $this->authorize('view', $team);
 
-        return ListResource::collection($team->lists()->paginate(15));
+        return ListResource::collection($team->lists()->paginate(10));
     }
 
 }
